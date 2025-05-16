@@ -20,43 +20,40 @@ st.markdown("Dashboard ini menampilkan visualisasi data karyawan berdasarkan ber
 
 # Create sample data if file doesn't exist (untuk testing)
 @st.cache_data
+@st.cache_data
 def load_or_create_sample_data():
     try:
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(current_dir)
+        file_path = os.path.join(current_dir, "employee_data_cleaned.csv")  # ✅ Perbaikan di sini
         emp_df = pd.read_csv(file_path)
         st.success("Data berhasil dimuat dari file CSV")
-        
+
         # Pastikan kolom Attrition memiliki format yang benar
         if 'Attrition' in emp_df.columns:
-            # Konversi nilai numerik ke string jika diperlukan
             if emp_df['Attrition'].dtype in [np.int64, np.float64]:
                 st.info("Mengkonversi kolom Attrition dari numerik ke string 'Yes'/'No'")
                 emp_df['Attrition'] = emp_df['Attrition'].map({1: 'Yes', 0: 'No'})
             
-            # Pastikan hanya ada nilai 'Yes' dan 'No'
             valid_values = ['Yes', 'No']
             invalid_mask = ~emp_df['Attrition'].isin(valid_values)
             if invalid_mask.any():
                 st.warning(f"Terdapat {invalid_mask.sum()} nilai tidak valid di kolom Attrition. Mengkonversi ke 'No'")
                 emp_df.loc[invalid_mask, 'Attrition'] = 'No'
-        
+
         return emp_df
+
     except FileNotFoundError:
         st.warning("File 'employee_data_cleaned.csv' tidak ditemukan. Menggunakan data sampel untuk demonstrasi.")
-        
-        # Buat data sampel
+
+        # Buat data sampel (seperti sebelumnya)
         np.random.seed(42)
         n = 1000
-        
-        # Data kategorikal
         genders = ["Male", "Female"]
         departments = ["HR", "Sales", "Engineering", "Finance", "Marketing"]
         education_fields = ["Life Sciences", "Medical", "Marketing", "Technical Degree", "Other"]
         job_roles = ["Sales Executive", "Research Scientist", "Manager", "Healthcare Representative", "Developer"]
         business_travel = ["Travel_Rarely", "Travel_Frequently", "Non-Travel"]
-        
-        # Buat DataFrame
+
         data = {
             "EmployeeNumber": range(1, n+1),
             "Age": np.random.randint(18, 65, n),
@@ -70,9 +67,9 @@ def load_or_create_sample_data():
             "JobSatisfaction": np.random.randint(1, 5, n),
             "WorkLifeBalance": np.random.randint(1, 5, n),
             "DistanceFromHome": np.random.randint(1, 30, n),
-            "Attrition": np.random.choice(["Yes", "No"], n, p=[0.16, 0.84])  # 16% attrition rate
+            "Attrition": np.random.choice(["Yes", "No"], n, p=[0.16, 0.84])
         }
-        
+
         return pd.DataFrame(data)
 
 # Load data
