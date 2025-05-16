@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -21,7 +22,9 @@ st.markdown("Dashboard ini menampilkan visualisasi data karyawan berdasarkan ber
 @st.cache_data
 def load_or_create_sample_data():
     try:
-        emp_df = pd.read_csv("DS_PA/subs2/employee_data_cleaned.csv")
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir)
+        emp_df = pd.read_csv(file_path)
         st.success("Data berhasil dimuat dari file CSV")
         
         # Pastikan kolom Attrition memiliki format yang benar
