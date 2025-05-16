@@ -21,7 +21,7 @@ st.markdown("Dashboard ini menampilkan visualisasi data karyawan berdasarkan ber
 @st.cache_data
 def load_or_create_sample_data():
     try:
-        emp_df = pd.read_csv("employee_data_cleaned.csv")
+        emp_df = pd.read_csv("DS_PA/subs2/employee_data_cleaned.csv")
         st.success("Data berhasil dimuat dari file CSV")
         
         # Pastikan kolom Attrition memiliki format yang benar
@@ -40,7 +40,7 @@ def load_or_create_sample_data():
         
         return emp_df
     except FileNotFoundError:
-        st.warning("File 'employee_data.csv' tidak ditemukan. Menggunakan data sampel untuk demonstrasi.")
+        st.warning("File 'employee_data_cleaned.csv' tidak ditemukan. Menggunakan data sampel untuk demonstrasi.")
         
         # Buat data sampel
         np.random.seed(42)
